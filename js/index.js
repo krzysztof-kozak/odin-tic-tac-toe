@@ -87,13 +87,22 @@ const Game = (function () {
 	let _HAS_BEEN_INITIALISED = false;
 	let _HAS_STARTED = false;
 
+	function _VALIDATE_MOVE(tileIndex) {
+		const currentMark = GameBoard.gameBoard[tileIndex].mark;
+		return currentMark === "empty";
+	}
+
 	function _SWAP_TURNS() {
 		_CURRENT_TURN = _CURRENT_TURN === _PLAYER1 ? _PLAYER2 : _PLAYER1;
 	}
 
 	function _TURN_HANDLER({ target }) {
-		if (!"index" in target.dataset) return;
+		if (!target.dataset.hasOwnProperty("index")) return;
+
 		const tileIndex = target.dataset.index;
+
+		const isValidMove = _VALIDATE_MOVE(tileIndex);
+		if (!isValidMove) return;
 
 		GameBoard.update(tileIndex, _CURRENT_TURN.playerSymbol);
 		DisplayController.update(tileIndex);
