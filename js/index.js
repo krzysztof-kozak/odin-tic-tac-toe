@@ -55,7 +55,11 @@ const DisplayController = (function () {
 		div.textContent = _GAME_BOARD[tileIndex].mark;
 	}
 
-	return { render, update };
+	function getGameContainer() {
+		return _GAME_CONTAINER;
+	}
+
+	return { render, update, getGameContainer };
 })();
 
 /* 
@@ -65,5 +69,52 @@ Player:
 */
 
 function Player(symbol) {
-	return Object.create(null, { symbol: { value: symbol } });
+	return { symbol: symbol };
 }
+
+/* 
+Game:
+    - need only one Game, so make it a module.
+    - holds information about players.
+    - holds information about whose turn it is.
+    - holds the control flow logic such as, start, end, update turn, etc.
+*/
+
+const Game = (function () {
+	const _PLAYER1 = Player("x");
+	const _PLAYER2 = Player("o");
+	let _CURRENT_TURN;
+	let _HAS_BEEN_INITIALISED = false;
+	let _HAS_STARTED = false;
+
+	function _CLICK_HANDLER(e) {
+		if (!"index" in e.target.dataset) return;
+
+		console.log(`Current Turn: ${_CURRENT_TURN.symbol}`);
+		_CURRENT_TURN = _CURRENT_TURN === _PLAYER1 ? _PLAYER2 : _PLAYER1;
+	}
+
+	function _ATTACH_EVENT_LISTENER(eventHandler) {
+		const gameboardNode = DisplayController.getGameContainer();
+		gameboardNode.addEventListener("click", eventHandler);
+	}
+
+	function _START() {
+		if (_HAS_STARTED) return;
+		_CURRENT_TURN = _PLAYER1;
+	}
+
+	function initialise() {
+		if (_HAS_BEEN_INITIALISED) return;
+		_HAS_BEEN_INITIALISED = true;
+
+		DisplayController.render();
+		_ATTACH_EVENT_LISTENER(_CLICK_HANDLER);
+
+		_START();
+	}
+
+	return { initialise };
+})();
+
+Game.initialise();
