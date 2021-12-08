@@ -9,7 +9,7 @@ const GameBoard = (function () {
 	const _MARKS = {
 		EMPTY: "empty",
 		X: "x",
-		Y: "y",
+		O: "o",
 	};
 
 	const gameBoard = Array(9).fill({ mark: _MARKS.EMPTY }, 0);
@@ -17,7 +17,7 @@ const GameBoard = (function () {
 	function _getMark(symbol) {
 		if (symbol === "empty") return { mark: _MARKS.EMPTY };
 		if (symbol === "x") return { mark: _MARKS.X };
-		if (symbol === "y") return { mark: _MARKS.Y };
+		if (symbol === "o") return { mark: _MARKS.O };
 	}
 
 	function update(index, mark) {
@@ -69,7 +69,7 @@ Player:
 */
 
 function Player(symbol) {
-	return { symbol: symbol };
+	return { playerSymbol: symbol };
 }
 
 /* 
@@ -87,16 +87,23 @@ const Game = (function () {
 	let _HAS_BEEN_INITIALISED = false;
 	let _HAS_STARTED = false;
 
-	function _CLICK_HANDLER(e) {
-		if (!"index" in e.target.dataset) return;
-
-		console.log(`Current Turn: ${_CURRENT_TURN.symbol}`);
+	function _SWAP_TURNS() {
 		_CURRENT_TURN = _CURRENT_TURN === _PLAYER1 ? _PLAYER2 : _PLAYER1;
 	}
 
-	function _ATTACH_EVENT_LISTENER(eventHandler) {
+	function _TURN_HANDLER({ target }) {
+		if (!"index" in target.dataset) return;
+		const tileIndex = target.dataset.index;
+
+		GameBoard.update(tileIndex, _CURRENT_TURN.playerSymbol);
+		DisplayController.update(tileIndex);
+
+		_SWAP_TURNS();
+	}
+
+	function _ATTACH_EVENT_LISTENER() {
 		const gameboardNode = DisplayController.getGameContainer();
-		gameboardNode.addEventListener("click", eventHandler);
+		gameboardNode.addEventListener("click", _TURN_HANDLER);
 	}
 
 	function _START() {
@@ -109,7 +116,7 @@ const Game = (function () {
 		_HAS_BEEN_INITIALISED = true;
 
 		DisplayController.render();
-		_ATTACH_EVENT_LISTENER(_CLICK_HANDLER);
+		_ATTACH_EVENT_LISTENER();
 
 		_START();
 	}
