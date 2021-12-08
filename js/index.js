@@ -1,7 +1,7 @@
 /* 
 GameBoard:
     - need only one GameBoard, so make it a module.
-    - holds information about the gameboard in form of an array.
+    - holds information about the gameoard in form of an array.
     - can update gamebard.
 */
 
@@ -26,4 +26,33 @@ const GameBoard = (function () {
 	}
 
 	return { gameBoard, update };
+})();
+
+/* 
+DisplayController:
+    - need only one DisplayController, so make it a module.
+    - renders the gameboard on screen.
+    - can re-render specific parts of the gameboard to reflect updates.
+*/
+const DisplayController = (function () {
+	const _GAME_CONTAINER = document.querySelector("body");
+	const _GAME_BOARD = GameBoard.gameBoard;
+
+	function render() {
+		_GAME_BOARD.forEach((tile, index) => {
+			const div = document.createElement("div");
+
+			div.setAttribute("data-index", index);
+			div.innerText = tile.mark;
+
+			_GAME_CONTAINER.append(div);
+		});
+	}
+
+	function update(tileIndex) {
+		const div = document.querySelector(`[data-index="${tileIndex}"]`);
+		div.textContent = _GAME_BOARD[tileIndex].mark;
+	}
+
+	return { render, update };
 })();
