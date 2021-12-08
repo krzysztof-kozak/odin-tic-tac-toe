@@ -116,5 +116,4 @@ const Game = (function () {
 
 	return { initialise };
 })();
-
 Game.initialise();

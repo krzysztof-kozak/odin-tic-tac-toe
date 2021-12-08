@@ -1,0 +1,19 @@
+.container {
+	width: 400px;
+	height: 400px;
+
+	margin: 100px auto;
+
+	display: grid;
+	grid-gap: 25px;
+
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+}
+
+.container > div {
+	display: grid;
+	place-items: center;
+
+	border: 1px solid black;
+}
