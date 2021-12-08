@@ -34,6 +34,7 @@ DisplayController:
     - renders the gameboard on screen.
     - can re-render specific parts of the gameboard to reflect updates.
 */
+
 const DisplayController = (function () {
 	const _GAME_CONTAINER = document.querySelector("body");
 	const _GAME_BOARD = GameBoard.gameBoard;
@@ -56,3 +57,13 @@ const DisplayController = (function () {
 
 	return { render, update };
 })();
+
+/* 
+Player:
+    - need more than one Player, so make it a factory.
+    - has a symbol (either x or o).
+*/
+
+function Player(symbol) {
+	return Object.create(null, { symbol: { value: symbol } });
+}
