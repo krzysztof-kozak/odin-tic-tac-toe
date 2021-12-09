@@ -79,7 +79,7 @@ const DisplayController = (function () {
 		div.textContent = _GAME_BOARD[boardIndex].mark;
 	}
 
-	function reset() {
+	function _RESET() {
 		const divs = document.querySelectorAll("[data-index]");
 		divs.forEach((div) => (div.innerText = "empty"));
 	}
@@ -89,10 +89,14 @@ const DisplayController = (function () {
 	}
 
 	function announceWinner(winner) {
-		console.log(winner);
+		swal({
+			title: "GAME ENDED",
+			text: `${winner.toUpperCase()} has won!`,
+			icon: "success",
+		}).then((_) => _RESET());
 	}
 
-	return { render, update, reset, announceWinner, getGameContainer };
+	return { render, update, announceWinner, getGameContainer };
 })();
 
 /* 
@@ -172,7 +176,6 @@ const Game = (function () {
 
 	function _END() {
 		GameBoard.reset();
-		DisplayController.reset();
 		_HAS_STARTED = false;
 		_WINNER = null;
 	}
