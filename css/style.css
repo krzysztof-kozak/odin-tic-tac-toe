@@ -1,19 +1,62 @@
-.container {
-	width: 400px;
-	height: 400px;
+html,
+body {
+	height: 100%;
+}
 
-	margin: 100px auto;
+body {
+	display: grid;
+	place-items: center;
+}
+
+h1 {
+	font-family: sans-serif;
+	font-size: 3rem;
+	margin-bottom: 1em;
+	text-align: center;
+}
+
+.container {
+	width: min(600px, 90vw);
+	height: min(600px, 90vw);
 
 	display: grid;
-	grid-gap: 25px;
 
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 1fr);
 }
 
 .container > div {
+	--border: 2px solid rgb(102, 103, 105);
+
 	display: grid;
 	place-items: center;
 
-	border: 1px solid black;
+	border-top: var(--no-bt, var(--border));
+	border-bottom: var(--no-bb, var(--border));
+	border-left: var(--no-bl, var(--border));
+	border-right: var(--no-br, var(--border));
+}
+
+.container > div:nth-child(1),
+.container > div:nth-child(2),
+.container > div:nth-child(3) {
+	--no-bt: none;
+}
+
+.container > div:nth-child(1),
+.container > div:nth-child(4),
+.container > div:nth-child(7) {
+	--no-bl: none;
+}
+
+.container > div:nth-child(3),
+.container > div:nth-child(6),
+.container > div:nth-child(9) {
+	--no-br: none;
+}
+
+.container > div:nth-child(7),
+.container > div:nth-child(8),
+.container > div:nth-child(9) {
+	--no-bb: none;
 }

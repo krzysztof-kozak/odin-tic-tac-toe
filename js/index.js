@@ -60,7 +60,7 @@ DisplayController:
 */
 
 const DisplayController = (function () {
-	const _GAME_CONTAINER = document.querySelector("body");
+	const _GAME_CONTAINER = document.querySelector(".container");
 	const _GAME_BOARD = GameBoard.gameBoard;
 
 	function render() {
