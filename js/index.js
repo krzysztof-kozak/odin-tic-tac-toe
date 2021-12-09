@@ -7,7 +7,7 @@ GameBoard:
 
 const GameBoard = (function () {
 	const _MARKS = {
-		EMPTY: "empty",
+		EMPTY: "",
 		X: "x",
 		O: "o",
 	};
@@ -31,7 +31,7 @@ const GameBoard = (function () {
 	const gameBoard = Array(9).fill({ mark: _MARKS.EMPTY }, 0);
 
 	function _getMark(symbol) {
-		if (symbol === "empty") return { mark: _MARKS.EMPTY };
+		if (symbol === "") return { mark: _MARKS.EMPTY };
 		if (symbol === "x") return { mark: _MARKS.X };
 		if (symbol === "o") return { mark: _MARKS.O };
 	}
@@ -81,7 +81,7 @@ const DisplayController = (function () {
 
 	function _RESET() {
 		const divs = document.querySelectorAll("[data-index]");
-		divs.forEach((div) => (div.innerText = "empty"));
+		divs.forEach((div) => (div.innerText = ""));
 	}
 
 	function getGameContainer() {
@@ -140,7 +140,7 @@ const Game = (function () {
 
 	function _VALIDATE_MOVE(boardIndex) {
 		const currentMark = GameBoard.gameBoard[boardIndex].mark;
-		return currentMark === "empty";
+		return currentMark === "";
 	}
 
 	function _SWAP_TURNS() {

@@ -35,6 +35,8 @@ h1 {
 	border-bottom: var(--no-bb, var(--border));
 	border-left: var(--no-bl, var(--border));
 	border-right: var(--no-br, var(--border));
+
+	font-size: 5rem;
 }
 
 .container > div:nth-child(1),
