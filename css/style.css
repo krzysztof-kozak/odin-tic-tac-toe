@@ -15,7 +15,30 @@ h1 {
 	text-align: center;
 }
 
+.names {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin-bottom: 3em;
+	gap: 3em;
+	font-size: 1.25rem;
+}
+
+.layout-control {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	align-items: center;
+}
+
+input {
+	background-color: #eceff1;
+	padding: 0.5em;
+	border-radius: 25px;
+}
+
 .container {
+	margin: 0 auto;
 	width: min(600px, 90vw);
 	height: min(600px, 90vw);
 
@@ -61,4 +84,27 @@ h1 {
 .container > div:nth-child(8),
 .container > div:nth-child(9) {
 	--no-bb: none;
+}
+
+button {
+	font-size: 1.5rem;
+	color: #fff;
+	padding: 0.25em 1em;
+	background-color: #333;
+	border-radius: 0.25em;
+	margin: 0 auto;
+	display: block;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #455a64;
+}
+
+button:active {
+	box-shadow: inset 0 0px 0px 2px;
+}
+
+.hidden {
+	display: none;
 }

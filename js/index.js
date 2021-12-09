@@ -77,6 +77,30 @@ const DisplayController = (function () {
 	function update(boardIndex) {
 		const div = document.querySelector(`[data-index="${boardIndex}"]`);
 		div.textContent = _GAME_BOARD[boardIndex].mark;
+
+		if (div.textContent === "x") {
+			div.style.backgroundColor = "#4aa3f224";
+		}
+
+		if (div.textContent === "o") {
+			div.style.backgroundColor = "#fce5cab3";
+		}
+	}
+
+	function show(element) {
+		if (element instanceof NodeList) {
+			element.forEach((element) => element.classList.remove("hidden"));
+			return;
+		}
+		element.classList.remove("hidden");
+	}
+
+	function hide(element) {
+		if (element instanceof NodeList) {
+			element.forEach((element) => element.classList.add("hidden"));
+			return;
+		}
+		element.classList.add("hidden");
 	}
 
 	function _RESET() {
@@ -96,7 +120,7 @@ const DisplayController = (function () {
 		}).then((_) => _RESET());
 	}
 
-	return { render, update, announceWinner, getGameContainer };
+	return { render, update, show, hide, announceWinner, getGameContainer };
 })();
 
 /* 
@@ -118,12 +142,30 @@ Game:
 */
 
 const Game = (function () {
+	const gameboardNode = DisplayController.getGameContainer();
+	const p1Label = document.querySelector("label[for='p1']");
+	const p2Label = document.querySelector("label[for='p2']");
+	const inputs = document.querySelectorAll("input");
+	const startBtn = document.querySelector("button");
+
 	const _PLAYER1 = Player("x");
 	const _PLAYER2 = Player("o");
 	let _CURRENT_TURN;
 	let _WINNER;
 	let _HAS_BEEN_INITIALISED = false;
 	let _HAS_STARTED = false;
+
+	function _NAME_PLAYER({ target }) {
+		if (target.id === "p1") {
+			_PLAYER1.name = target.value || "Player 1";
+			p1Label.innerText = target.value || "Player 1";
+		}
+
+		if (target.id === "p2") {
+			_PLAYER1.name = target.value || "Player 2";
+			p2Label.innerText = target.value || "Player 2";
+		}
+	}
 
 	function _CHECK_FOR_WINNER(boardIndex, symbol) {
 		const winningStates = GameBoard.getWinningStates();
@@ -169,8 +211,9 @@ const Game = (function () {
 		_SWAP_TURNS();
 	}
 
-	function _ATTACH_EVENT_LISTENER() {
-		const gameboardNode = DisplayController.getGameContainer();
+	function _ATTACH_EVENT_LISTENERS() {
+		inputs.forEach((input) => input.addEventListener("change", _NAME_PLAYER));
+		startBtn.addEventListener("click", _START);
 		gameboardNode.addEventListener("click", _TURN_HANDLER);
 	}
 
@@ -184,6 +227,13 @@ const Game = (function () {
 		if (_HAS_STARTED) return;
 		_HAS_STARTED = true;
 		_CURRENT_TURN = _PLAYER1;
+
+		p1Label.style.backgroundColor = "#4aa3f224";
+		p2Label.style.backgroundColor = "#fce5cab3";
+
+		DisplayController.show(gameboardNode);
+		DisplayController.hide(startBtn);
+		DisplayController.hide(inputs);
 	}
 
 	function initialise() {
@@ -192,8 +242,7 @@ const Game = (function () {
 
 		DisplayController.render();
 
-		_ATTACH_EVENT_LISTENER();
-		_START();
+		_ATTACH_EVENT_LISTENERS();
 	}
 
 	return { initialise };
