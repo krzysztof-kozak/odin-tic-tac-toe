@@ -31,6 +31,18 @@ h1 {
 	align-items: center;
 }
 
+label {
+	padding: 0.1em 0.3em;
+	border: 1px solid black;
+	border-radius: 5px;
+	box-shadow: 5px 5px 7px 0px, 2px 2px 1px 2px;
+	cursor: default;
+}
+
+label:hover {
+	border-color: red;
+}
+
 input {
 	background-color: #eceff1;
 	padding: 0.5em;
