@@ -12,6 +12,22 @@ const GameBoard = (function () {
 		O: "o",
 	};
 
+	const _WINNING_STATES = [
+		// horizontal win
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+
+		// vertical win
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8],
+
+		// diagnoal win
+		[0, 4, 8],
+		[6, 4, 2],
+	];
+
 	const gameBoard = Array(9).fill({ mark: _MARKS.EMPTY }, 0);
 
 	function _getMark(symbol) {
@@ -20,12 +36,20 @@ const GameBoard = (function () {
 		if (symbol === "o") return { mark: _MARKS.O };
 	}
 
+	function getWinningStates() {
+		return _WINNING_STATES;
+	}
+
 	function update(index, mark) {
 		mark = _getMark(mark);
 		gameBoard[index] = mark;
 	}
 
-	return { gameBoard, update };
+	function reset() {
+		gameBoard.fill({ mark: _MARKS.EMPTY });
+	}
+
+	return { gameBoard, update, reset, getWinningStates };
 })();
 
 /* 
@@ -50,16 +74,25 @@ const DisplayController = (function () {
 		});
 	}
 
-	function update(tileIndex) {
-		const div = document.querySelector(`[data-index="${tileIndex}"]`);
-		div.textContent = _GAME_BOARD[tileIndex].mark;
+	function update(boardIndex) {
+		const div = document.querySelector(`[data-index="${boardIndex}"]`);
+		div.textContent = _GAME_BOARD[boardIndex].mark;
+	}
+
+	function reset() {
+		const divs = document.querySelectorAll("[data-index]");
+		divs.forEach((div) => (div.innerText = "empty"));
 	}
 
 	function getGameContainer() {
 		return _GAME_CONTAINER;
 	}
 
-	return { render, update, getGameContainer };
+	function announceWinner(winner) {
+		console.log(winner);
+	}
+
+	return { render, update, reset, announceWinner, getGameContainer };
 })();
 
 /* 
@@ -84,11 +117,25 @@ const Game = (function () {
 	const _PLAYER1 = Player("x");
 	const _PLAYER2 = Player("o");
 	let _CURRENT_TURN;
+	let _WINNER;
 	let _HAS_BEEN_INITIALISED = false;
 	let _HAS_STARTED = false;
 
-	function _VALIDATE_MOVE(tileIndex) {
-		const currentMark = GameBoard.gameBoard[tileIndex].mark;
+	function _CHECK_FOR_WINNER(boardIndex, symbol) {
+		const winningStates = GameBoard.getWinningStates();
+		const board = GameBoard.gameBoard;
+
+		const relevantStates = winningStates.filter((state) => state.includes(boardIndex));
+
+		relevantStates.forEach((state) => {
+			if (state.every((index) => board[index].mark === symbol)) {
+				_WINNER = _CURRENT_TURN.playerSymbol;
+			}
+		});
+	}
+
+	function _VALIDATE_MOVE(boardIndex) {
+		const currentMark = GameBoard.gameBoard[boardIndex].mark;
 		return currentMark === "empty";
 	}
 
@@ -99,13 +146,21 @@ const Game = (function () {
 	function _TURN_HANDLER({ target }) {
 		if (!target.dataset.hasOwnProperty("index")) return;
 
-		const tileIndex = target.dataset.index;
+		const boardIndex = target.dataset.index;
 
-		const isValidMove = _VALIDATE_MOVE(tileIndex);
+		const isValidMove = _VALIDATE_MOVE(boardIndex);
 		if (!isValidMove) return;
 
-		GameBoard.update(tileIndex, _CURRENT_TURN.playerSymbol);
-		DisplayController.update(tileIndex);
+		GameBoard.update(boardIndex, _CURRENT_TURN.playerSymbol);
+		DisplayController.update(boardIndex);
+
+		_CHECK_FOR_WINNER(parseInt(boardIndex, 10), _CURRENT_TURN.playerSymbol);
+
+		if (_WINNER) {
+			_END();
+			DisplayController.announceWinner(_WINNER);
+			return;
+		}
 
 		_SWAP_TURNS();
 	}
@@ -115,8 +170,16 @@ const Game = (function () {
 		gameboardNode.addEventListener("click", _TURN_HANDLER);
 	}
 
+	function _END() {
+		GameBoard.reset();
+		DisplayController.reset();
+		_HAS_STARTED = false;
+		_WINNER = null;
+	}
+
 	function _START() {
 		if (_HAS_STARTED) return;
+		_HAS_STARTED = true;
 		_CURRENT_TURN = _PLAYER1;
 	}
 
@@ -125,8 +188,8 @@ const Game = (function () {
 		_HAS_BEEN_INITIALISED = true;
 
 		DisplayController.render();
-		_ATTACH_EVENT_LISTENER();
 
+		_ATTACH_EVENT_LISTENER();
 		_START();
 	}
 
