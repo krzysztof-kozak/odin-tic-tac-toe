@@ -157,8 +157,8 @@ const Game = (function () {
 		_CHECK_FOR_WINNER(parseInt(boardIndex, 10), _CURRENT_TURN.playerSymbol);
 
 		if (_WINNER) {
-			_END();
 			DisplayController.announceWinner(_WINNER);
+			_END();
 			return;
 		}
 
