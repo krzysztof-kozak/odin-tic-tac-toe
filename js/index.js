@@ -98,7 +98,10 @@ const DisplayController = (function () {
 
 	function _RESET() {
 		const divs = document.querySelectorAll("[data-index]");
-		divs.forEach((div) => (div.innerText = ""));
+		divs.forEach((div) => {
+			div.innerText = "";
+			div.style.backgroundColor = "";
+		});
 	}
 
 	function getGameContainer() {
@@ -214,9 +217,15 @@ const Game = (function () {
 	}
 
 	function _END() {
-		GameBoard.reset();
 		_HAS_STARTED = false;
 		_WINNER = null;
+		_CURRENT_TURN = null;
+
+		GameBoard.reset();
+
+		DisplayController.hide(gameboardNode);
+		DisplayController.show(startBtn);
+		DisplayController.show(inputs);
 	}
 
 	function _START() {
