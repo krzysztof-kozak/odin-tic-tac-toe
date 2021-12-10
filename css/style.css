@@ -31,7 +31,15 @@ h1 {
 	align-items: center;
 }
 
+.player-1 {
+	--player-1: rgba(74, 163, 242, 0.14);
+}
+.player-2 {
+	--player-2: rgba(252, 229, 202, 0.7);
+}
+
 label {
+	background-color: var(--player-1, var(--player-2));
 	padding: 0.1em 0.3em;
 	border: 1px solid black;
 	border-radius: 5px;
