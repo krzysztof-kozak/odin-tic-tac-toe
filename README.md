@@ -10,6 +10,6 @@ The main goal of this project was to practice:
 
 This project uses a 3rd party library to display some cool alerts: [swal](https://sweetalert.js.org/)
 
-View the deployed project at [Github Pages](https://krzysztof-kozak.github.io/tic-tac-toe/).
+View the deployed project at [Github Pages](https://krzysztof-kozak.github.io/odin-tic-tac-toe).
 
 <img src="https://raw.githubusercontent.com/krzysztof-kozak/odin-tic-tac-toe/main/screenshot.png" style="display: block; width: 80%; margin: 50px auto;">
