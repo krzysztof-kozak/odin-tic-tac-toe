@@ -129,8 +129,11 @@ Player:
     - has a symbol (either x or o).
 */
 
-function Player(symbol) {
-	return { playerSymbol: symbol };
+function Player(symbol, color) {
+	return {
+		playerSymbol: symbol,
+		playerColor: color,
+	};
 }
 
 /* 
@@ -148,8 +151,8 @@ const Game = (function () {
 	const inputs = document.querySelectorAll("input");
 	const startBtn = document.querySelector("button");
 
-	const _PLAYER1 = Player("x");
-	const _PLAYER2 = Player("o");
+	const _PLAYER1 = Player("x", "#4aa3f224");
+	const _PLAYER2 = Player("o", "#fce5cab3");
 	let _CURRENT_TURN;
 	let _WINNER;
 	let _HAS_BEEN_INITIALISED = false;
@@ -228,8 +231,8 @@ const Game = (function () {
 		_HAS_STARTED = true;
 		_CURRENT_TURN = _PLAYER1;
 
-		p1Label.style.backgroundColor = "#4aa3f224";
-		p2Label.style.backgroundColor = "#fce5cab3";
+		p1Label.style.backgroundColor = _PLAYER1.playerColor;
+		p2Label.style.backgroundColor = _PLAYER2.playerColor;
 
 		DisplayController.show(gameboardNode);
 		DisplayController.hide(startBtn);
