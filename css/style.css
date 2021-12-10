@@ -10,6 +10,7 @@ body {
 body {
 	display: grid;
 	place-items: center;
+	grid-template-rows: 1fr 50px;
 }
 
 h1 {
@@ -127,6 +128,19 @@ button:hover {
 
 button:active {
 	box-shadow: inset 0 0px 0px 2px;
+}
+
+.flex-container {
+	font-size: 1.5rem;
+	display: flex;
+	margin: 0 auto;
+	width: fit-content;
+	gap: 0.5em;
+}
+
+.github-icon {
+	display: grid;
+	cursor: pointer;
 }
 
 .hidden {
