@@ -159,18 +159,6 @@ const Game = (function () {
 	let _HAS_BEEN_INITIALISED = false;
 	let _HAS_STARTED = false;
 
-	function _NAME_PLAYER({ target }) {
-		if (target.id === "p1") {
-			_PLAYER1.name = target.value || "Player 1";
-			p1Label.innerText = target.value || "Player 1";
-		}
-
-		if (target.id === "p2") {
-			_PLAYER1.name = target.value || "Player 2";
-			p2Label.innerText = target.value || "Player 2";
-		}
-	}
-
 	function _CHECK_FOR_WINNER(boardIndex, symbol) {
 		const winningStates = GameBoard.getWinningStates();
 		const board = GameBoard.gameBoard;
@@ -191,6 +179,12 @@ const Game = (function () {
 
 	function _SWAP_TURNS() {
 		_CURRENT_TURN = _CURRENT_TURN === _PLAYER1 ? _PLAYER2 : _PLAYER1;
+	}
+
+	function _NAME_PLAYER(player, label, input, defaultName) {
+		player.name = input.value || defaultName;
+		label.innerText = input.value || defaultName;
+		label.style.backgroundColor = player.color;
 	}
 
 	function _TURN_HANDLER({ target }) {
@@ -216,8 +210,6 @@ const Game = (function () {
 	}
 
 	function _ATTACH_EVENT_LISTENERS() {
-		p1Input.addEventListener("change", _NAME_PLAYER);
-		p2Input.addEventListener("change", _NAME_PLAYER);
 		startBtn.addEventListener("click", _START);
 		gameboardNode.addEventListener("click", _TURN_HANDLER);
 	}
@@ -247,8 +239,8 @@ const Game = (function () {
 		_HAS_STARTED = true;
 		_CURRENT_TURN = _PLAYER1;
 
-		p1Label.style.backgroundColor = _PLAYER1.color;
-		p2Label.style.backgroundColor = _PLAYER2.color;
+		_NAME_PLAYER(_PLAYER1, p1Label, p1Input, "Player 1");
+		_NAME_PLAYER(_PLAYER2, p2Label, p2Input, "Player 2");
 
 		DisplayController.show(gameboardNode);
 		DisplayController.hide(startBtn);
