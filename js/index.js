@@ -221,6 +221,9 @@ const Game = (function () {
 		_WINNER = null;
 		_CURRENT_TURN = null;
 
+		p1Label.innerText = "Player 1";
+		p2Label.innerText = "Player 2";
+
 		GameBoard.reset();
 
 		DisplayController.hide(gameboardNode);
