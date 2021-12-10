@@ -74,10 +74,10 @@ const DisplayController = (function () {
 		});
 	}
 
-	function update(boardIndex, playerColor) {
+	function update(boardIndex, color) {
 		const div = document.querySelector(`[data-index="${boardIndex}"]`);
 		div.textContent = _GAME_BOARD[boardIndex].mark;
-		div.style.backgroundColor = playerColor;
+		div.style.backgroundColor = color;
 	}
 
 	function show(element) {
@@ -125,10 +125,11 @@ Player:
     - has a symbol (either x or o).
 */
 
-function Player(symbol, color) {
+function Player(symbol, color, name) {
 	return {
-		playerSymbol: symbol,
-		playerColor: color,
+		symbol: symbol,
+		color: color,
+		name: name,
 	};
 }
 
@@ -148,8 +149,8 @@ const Game = (function () {
 	const p2Input = document.querySelector("#p2");
 	const startBtn = document.querySelector("button");
 
-	const _PLAYER1 = Player("x", "#4aa3f224");
-	const _PLAYER2 = Player("o", "#fce5cab3");
+	const _PLAYER1 = Player("x", "#4aa3f224", "Player 1");
+	const _PLAYER2 = Player("o", "#fce5cab3", "Player 2");
 	let _CURRENT_TURN;
 	let _WINNER;
 	let _HAS_BEEN_INITIALISED = false;
@@ -197,10 +198,10 @@ const Game = (function () {
 		const isValidMove = _VALIDATE_MOVE(boardIndex);
 		if (!isValidMove) return;
 
-		GameBoard.update(boardIndex, _CURRENT_TURN.playerSymbol);
-		DisplayController.update(boardIndex, _CURRENT_TURN.playerColor);
+		GameBoard.update(boardIndex, _CURRENT_TURN.symbol);
+		DisplayController.update(boardIndex, _CURRENT_TURN.color);
 
-		_CHECK_FOR_WINNER(parseInt(boardIndex, 10), _CURRENT_TURN.playerSymbol);
+		_CHECK_FOR_WINNER(parseInt(boardIndex, 10), _CURRENT_TURN.symbol);
 
 		if (_WINNER) {
 			DisplayController.announceWinner(_WINNER);
@@ -241,8 +242,8 @@ const Game = (function () {
 		_HAS_STARTED = true;
 		_CURRENT_TURN = _PLAYER1;
 
-		p1Label.style.backgroundColor = _PLAYER1.playerColor;
-		p2Label.style.backgroundColor = _PLAYER2.playerColor;
+		p1Label.style.backgroundColor = _PLAYER1.color;
+		p2Label.style.backgroundColor = _PLAYER2.color;
 
 		DisplayController.show(gameboardNode);
 		DisplayController.hide(startBtn);
