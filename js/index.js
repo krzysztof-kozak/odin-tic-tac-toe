@@ -144,7 +144,8 @@ const Game = (function () {
 	const gameboardNode = DisplayController.getGameContainer();
 	const p1Label = document.querySelector("label[for='p1']");
 	const p2Label = document.querySelector("label[for='p2']");
-	const inputs = document.querySelectorAll("input");
+	const p1Input = document.querySelector("#p1");
+	const p2Input = document.querySelector("#p2");
 	const startBtn = document.querySelector("button");
 
 	const _PLAYER1 = Player("x", "#4aa3f224");
@@ -211,7 +212,8 @@ const Game = (function () {
 	}
 
 	function _ATTACH_EVENT_LISTENERS() {
-		inputs.forEach((input) => input.addEventListener("change", _NAME_PLAYER));
+		p1Input.addEventListener("change", _NAME_PLAYER);
+		p2Input.addEventListener("change", _NAME_PLAYER);
 		startBtn.addEventListener("click", _START);
 		gameboardNode.addEventListener("click", _TURN_HANDLER);
 	}
@@ -223,6 +225,8 @@ const Game = (function () {
 
 		p1Label.innerText = "Player 1";
 		p2Label.innerText = "Player 2";
+		p1Input.value = "";
+		p2Input.value = "";
 
 		GameBoard.reset();
 
