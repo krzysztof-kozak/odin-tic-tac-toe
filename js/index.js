@@ -111,7 +111,7 @@ const DisplayController = (function () {
 	function announceWinner(winner) {
 		swal({
 			title: "GAME ENDED",
-			text: `${winner.toUpperCase()} has won!`,
+			text: `${winner.name} has won!`,
 			icon: "success",
 		}).then((_) => _RESET());
 	}
@@ -175,7 +175,7 @@ const Game = (function () {
 
 		relevantStates.forEach((state) => {
 			if (state.every((index) => board[index].mark === symbol)) {
-				_WINNER = _CURRENT_TURN.playerSymbol;
+				_WINNER = _CURRENT_TURN;
 			}
 		});
 	}
@@ -232,7 +232,8 @@ const Game = (function () {
 
 		DisplayController.hide(gameboardNode);
 		DisplayController.show(startBtn);
-		DisplayController.show(inputs);
+		DisplayController.show(p1Input);
+		DisplayController.show(p2Input);
 	}
 
 	function _START() {
@@ -245,7 +246,8 @@ const Game = (function () {
 
 		DisplayController.show(gameboardNode);
 		DisplayController.hide(startBtn);
-		DisplayController.hide(inputs);
+		DisplayController.hide(p1Input);
+		DisplayController.hide(p2Input);
 	}
 
 	function initialise() {
