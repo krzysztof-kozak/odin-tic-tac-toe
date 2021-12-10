@@ -109,6 +109,9 @@ const DisplayController = (function () {
 	}
 
 	function announceWinner(winner) {
+		const root = document.documentElement;
+		root.style.setProperty("--modal-text-bgc", winner.color);
+
 		swal({
 			title: "GAME ENDED",
 			text: `${winner.name} has won!`,

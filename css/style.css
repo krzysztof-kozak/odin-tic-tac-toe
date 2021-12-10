@@ -1,3 +1,7 @@
+:root {
+	--modal-text-bgc: "";
+}
+
 html,
 body {
 	height: 100%;
@@ -127,4 +131,9 @@ button:active {
 
 .hidden {
 	display: none;
+}
+
+.swal-text {
+	background-color: var(--modal-text-bgc);
+	padding: 0.5em;
 }
