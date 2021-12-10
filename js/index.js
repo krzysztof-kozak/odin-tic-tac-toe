@@ -74,17 +74,10 @@ const DisplayController = (function () {
 		});
 	}
 
-	function update(boardIndex) {
+	function update(boardIndex, playerColor) {
 		const div = document.querySelector(`[data-index="${boardIndex}"]`);
 		div.textContent = _GAME_BOARD[boardIndex].mark;
-
-		if (div.textContent === "x") {
-			div.style.backgroundColor = "#4aa3f224";
-		}
-
-		if (div.textContent === "o") {
-			div.style.backgroundColor = "#fce5cab3";
-		}
+		div.style.backgroundColor = playerColor;
 	}
 
 	function show(element) {
@@ -201,7 +194,7 @@ const Game = (function () {
 		if (!isValidMove) return;
 
 		GameBoard.update(boardIndex, _CURRENT_TURN.playerSymbol);
-		DisplayController.update(boardIndex);
+		DisplayController.update(boardIndex, _CURRENT_TURN.playerColor);
 
 		_CHECK_FOR_WINNER(parseInt(boardIndex, 10), _CURRENT_TURN.playerSymbol);
 
