@@ -223,6 +223,8 @@ const Game = (function () {
 		_HAS_STARTED = false;
 		_WINNER = null;
 		_CURRENT_TURN = null;
+		_PLAYER1.name = "Player 1";
+		_PLAYER2.name = "Player 2";
 
 		p1Label.innerText = "Player 1";
 		p2Label.innerText = "Player 2";
