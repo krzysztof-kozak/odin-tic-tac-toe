@@ -114,7 +114,7 @@ const DisplayController = (function () {
 
 		swal({
 			title: "GAME ENDED",
-			text: `${winner.name} has won!`,
+			text: winner.name === "tie" ? "It's a tie!" : `${winner.name} has won!`,
 			icon: "success",
 		}).then((_) => _RESET());
 	}
@@ -170,6 +170,10 @@ const Game = (function () {
 				_WINNER = _CURRENT_TURN;
 			}
 		});
+
+		if (board.every((tile) => tile.mark === "x" || tile.mark === "o")) {
+			_WINNER = { name: "tie", color: "" };
+		}
 	}
 
 	function _VALIDATE_MOVE(boardIndex) {
